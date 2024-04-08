@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+    <!-- ros opencv interoperability node -->  
+    <node pkg="ros2_opencv" exec="recognizer"/>
+
+    <!-- visualization -->  
+    <let name="rviz_config" value="/home/bbz/Workspace/packages/ros_opencv/config/ros_opencv.rviz"/>
+    <node name="rviz2" pkg="rviz2" exec="rviz2" args="-d $(var rviz_config)"/>
+</launch>
