@@ -23,10 +23,10 @@ Clone the repository
 ```
 git clone https://github.com/BBO-repo/ros2-opencv.git
 ```
-Return to your workspace folder and build your cloned package
+Return to your workspace folder and rebuild your workspace
 ```
 cd ~/ros2_ws
-colcon build --packages-select ros2-opencv
+colcon build --symlink-install
 ```
 Source your `install/setup.bash`
 ```
