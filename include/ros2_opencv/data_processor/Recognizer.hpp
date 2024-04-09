@@ -1,4 +1,7 @@
-#include <tuple>
+#ifndef RECOGNIZER_H
+#define RECOGNIZER_H
+
+#include "data_processor/Inference.hpp"
 
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/image.hpp"
@@ -14,11 +17,8 @@ private:
   sensor_msgs::msg::Image::SharedPtr msg_;
   rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr publisher_;
   rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr subscription_;
-  size_t count_;
-  // keep the last 1000 position
-  int trajectory_[2][1000];
-  // utils to update and plot trajectory in published image
-  std::tuple<int, int> find_ball_position(const cv::Mat &image);
-  void update_trajectory(int x, int y);
-  void draw_trajectory(cv::Mat &image);
+  size_t count_{0};
+  Inference inf;
 };
+
+#endif // RECOGNIZER_H

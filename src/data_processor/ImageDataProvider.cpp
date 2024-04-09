@@ -9,36 +9,31 @@
 
 using namespace std::chrono_literals;
 
-CameraMockerNode::CameraMockerNode() : Node("camera_mocker_publisher"), count_(0), rng_(cv::theRNG())
+CameraMockerNode::CameraMockerNode(std::string video_path) :
+    Node("camera_mocker_publisher"), rng_(cv::theRNG()),
+    video_path_{video_path}
 {
     publisher_ = this->create_publisher<sensor_msgs::msg::Image>("image_provider", 10);
     timer_ = this->create_wall_timer(500ms, std::bind(&CameraMockerNode::timer_callback, this));
-
-    // start at a random position
-    x_ = rng_.uniform(0,cols_);
-    y_ = this->rng_.uniform(0,rows_);
+    
+    // open video file
+    capture_.open(video_path_);
 }
 
 void CameraMockerNode::timer_callback() {
-    
-    // build a new 640x480 image
-    cv::Mat img(cv::Size(cols_, rows_), CV_8UC3, cv::Scalar(255, 255, 255));
+    cv::Mat frame, resized_frame;
+    capture_.read(frame);
+    if (frame.empty())
+    {
+        RCLCPP_INFO(this->get_logger(), "Media %s finished", video_path_.c_str());
+        return;
+    }
 
-    // move ball randomly
-    int dx = this->rng_.uniform(0,17) - 5;
-    int dy = this->rng_.uniform(0,17) - 5;
-
-    x_ = x_ + dx < 0 ? 0 : (x_ + dx > cols_ ? cols_ : x_ + dx ); 
-    y_ = y_ + dy < 0 ? 0 : (y_ + dy > rows_ ? rows_ : y_ + dy ); 
-
-    // draw ball with updated position
-    cv::circle(img, cv::Point(x_, y_), 30, CV_RGB(255,0,0), cv::FILLED, 10);
-
+    cv::resize(frame, resized_frame, cv::Size{cols_, rows_}, 0, 0, cv::INTER_CUBIC);
     // build converts a openCV into a ROS image message
-    msg_ = cv_bridge::CvImage(std_msgs::msg::Header(), "bgr8", img).toImageMsg();
-
-    // Publish the image to the topic defined in the publisher
+    msg_ = cv_bridge::CvImage(std_msgs::msg::Header(), "bgr8", resized_frame).toImageMsg();
     publisher_->publish(*msg_.get());
-    RCLCPP_INFO(this->get_logger(), "Image %ld published", count_);
+
+    RCLCPP_INFO(this->get_logger(), "Image %d published", count_);
     count_++;
 }

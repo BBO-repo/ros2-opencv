@@ -22,8 +22,9 @@ find_package(OpenCV REQUIRED)
 # add node executables
 add_executable(recognizer
     src/main.cpp
-    src/data_processor/Recognizer.cpp
     src/data_processor/ImageDataProvider.cpp
+    src/data_processor/Inference.cpp
+    src/data_processor/Recognizer.cpp
 )
 
 # includes
