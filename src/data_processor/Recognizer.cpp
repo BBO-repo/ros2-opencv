@@ -9,12 +9,15 @@
 #include <image_transport/image_transport.hpp>
 
 DataProcessorNode::DataProcessorNode() : 
-    Node("opencv_image_processor"),
-    inf(Inference("/home/bbz/Workspace/packages/ros2-opencv/assets/yolov5s.onnx"))
+    Node("opencv_image_processor")
 {
     subscription_ = this->create_subscription<sensor_msgs::msg::Image>(
         "image_provider", 10, std::bind(&DataProcessorNode::topic_callback, this, std::placeholders::_1));
     publisher_ = this->create_publisher<sensor_msgs::msg::Image>("processed_image", 10);
+    declare_parameter("yolov5_file_path", "");
+    yolov5_file_path_ = get_parameter("yolov5_file_path").as_string();
+    inf_ptr = std::make_unique<Inference>(yolov5_file_path_);
+    RCLCPP_INFO(get_logger(), "Using yolov5 file: %s", yolov5_file_path_.c_str());
 }
 
 void DataProcessorNode::topic_callback(const sensor_msgs::msg::Image::SharedPtr msg) {
@@ -33,7 +36,7 @@ void DataProcessorNode::topic_callback(const sensor_msgs::msg::Image::SharedPtr 
     // image processing
     cv::Mat image_raw = cv_ptr->image;
     // Process image
-    std::vector<Detection> output = inf.runInference(image_raw);
+    std::vector<Detection> output = inf_ptr->runInference(image_raw);
     for (size_t i = 0; i < output.size(); ++i)
     {
         Detection detection = output[i];

@@ -18,7 +18,8 @@ private:
   rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr publisher_;
   rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr subscription_;
   size_t count_{0};
-  Inference inf;
+  std::string yolov5_file_path_{};
+  std::unique_ptr<Inference> inf_ptr;
 };
 
 #endif // RECOGNIZER_H

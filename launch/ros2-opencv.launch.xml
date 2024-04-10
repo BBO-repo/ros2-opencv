@@ -3,9 +3,12 @@
 <launch>
     <!-- rviz configuration file -->
     <arg name="rviz_config" default=""/>
+    <arg name="yolov5_file_path" default=""/>
 
     <!-- ros opencv interoperability node -->  
-    <node pkg="ros2_opencv" exec="recognizer"/>
+    <node pkg="ros2_opencv" exec="recognizer">
+        <param name="yolov5_file_path" value="$(var yolov5_file_path)"/>
+    </node>
 
     <!-- visualization -->  
     <node name="rviz2" pkg="rviz2" exec="rviz2" args="-d $(var rviz_config)"/>

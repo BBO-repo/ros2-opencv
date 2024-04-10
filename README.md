@@ -34,5 +34,5 @@ source install/setup.bash
 ```
 Launch the package launch file
 ```
-ros2 launch src/ros2-opencv/launch/ros2-opencv.launch.xml rviz_config:=src/ros2-opencv/config/ros2_opencv.rviz
+ros2 launch src/ros2-opencv/launch/ros2-opencv.launch.xml rviz_config:=src/ros2-opencv/config/ros2_opencv.rviz yolov5_file_path:=src/ros2-opencv/assets/yolov5s.onnx
 ```
