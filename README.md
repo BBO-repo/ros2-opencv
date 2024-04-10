@@ -4,12 +4,12 @@ ROS 2 - OpenCV interoperability show case package
 `ROS 2` demo package to illustrate interoperability with `OpenCV`.</br>
 It was tested with ROS 2 Humble but should also work with other distribution since no tweaks were added to make sure anyone can use it.</br>
 This package provides two nodes:
-- `CameraMockerNode`: generating image from OpenCV and publishing it through `image_provider` topic
-- `DataProcessorNode`: susbscribing to `image_provider` topic and processing received image with OpenCV then publishing processed image through `processed_image` topic
+- `CameraMockerNode`: loading a MPEG4 video with OpenCV and publishing its image in `image_provider` topic
+- `DataProcessorNode`: susbscribing to `image_provider` topic and processing received image with OpenCV object detection then publishing processed image in `processed_image` topic
 
 What to expect
 ===================================================
-This package provides a launch file to automatically launch the two nodes described above, one publishing an image to `image_provider` and a second subscribing to this topic and as callback perform basic image processing then publish the result in the `processed_image` topic.</br>
+This package provides a launch file to automatically launch the two nodes described above, one publishing an image to `image_provider` and a second subscribing to this topic and as callback performs YOLOv5 object detection with OpenCV dnn then publishes the result in the `processed_image` topic.</br>
 The animation below illustrate the expected behavior
 ![](ros2-opencv-interoperability.gif)
 
