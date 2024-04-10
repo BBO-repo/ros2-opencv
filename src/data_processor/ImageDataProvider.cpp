@@ -9,13 +9,16 @@
 
 using namespace std::chrono_literals;
 
-CameraMockerNode::CameraMockerNode(std::string video_path) :
-    Node("camera_mocker_publisher"), rng_(cv::theRNG()),
-    video_path_{video_path}
+CameraMockerNode::CameraMockerNode() :
+    Node("camera_mocker_publisher"), rng_(cv::theRNG())
 {
     publisher_ = this->create_publisher<sensor_msgs::msg::Image>("image_provider", 10);
     timer_ = this->create_wall_timer(500ms, std::bind(&CameraMockerNode::timer_callback, this));
-    
+
+    // retrieve vidoe file path through parameter
+    declare_parameter("video_path", "");
+    video_path_ = get_parameter("video_path").as_string();
+
     // open video file
     capture_.open(video_path_);
 }

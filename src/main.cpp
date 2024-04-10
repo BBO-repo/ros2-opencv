@@ -8,7 +8,7 @@ int main(int argc, char * argv[])
     rclcpp::init(argc, argv);
     rclcpp::executors::SingleThreadedExecutor exec;
 
-    auto cam_mock_node = std::make_shared<CameraMockerNode>("/home/bbz/Workspace/packages/ros2-opencv/assets/street-walk.mp4");
+    auto cam_mock_node = std::make_shared<CameraMockerNode>();
     auto recon_node = std::make_shared<DataProcessorNode>();
 
     exec.add_node(cam_mock_node);

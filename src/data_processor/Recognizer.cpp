@@ -11,12 +11,21 @@
 DataProcessorNode::DataProcessorNode() : 
     Node("opencv_image_processor")
 {
+    // subscribing to image provider topic
     subscription_ = this->create_subscription<sensor_msgs::msg::Image>(
         "image_provider", 10, std::bind(&DataProcessorNode::topic_callback, this, std::placeholders::_1));
+    
+    // publishing the OpenCV processed image
     publisher_ = this->create_publisher<sensor_msgs::msg::Image>("processed_image", 10);
+    
+    // retrieve YOLO v5 file path through parameter
     declare_parameter("yolov5_file_path", "");
     yolov5_file_path_ = get_parameter("yolov5_file_path").as_string();
+    
+    // inference engine
     inf_ptr = std::make_unique<Inference>(yolov5_file_path_);
+    
+    // log
     RCLCPP_INFO(get_logger(), "Using yolov5 file: %s", yolov5_file_path_.c_str());
 }
 

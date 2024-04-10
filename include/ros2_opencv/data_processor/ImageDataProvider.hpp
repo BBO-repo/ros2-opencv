@@ -10,7 +10,7 @@
 
 class CameraMockerNode : public rclcpp::Node {
 public:
-  CameraMockerNode(std::string video_path);
+  CameraMockerNode();
  
 private:
   void timer_callback();
