@@ -21,7 +21,6 @@ std::vector<Detection> Inference::runInference(const cv::Mat &input)
 
     float* data = (float*)outputs[0].data;
 
-    const int dimensions = 85;
     const int rows = 25200;
 
     std::vector<int> class_ids;
