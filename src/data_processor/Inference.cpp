@@ -7,12 +7,7 @@ Inference::Inference(const std::string &onnxModelPath) : modelPath(onnxModelPath
 
 std::vector<Detection> Inference::runInference(const cv::Mat &input)
 {
-    /*
-    Performs object detection on an input image using the YOLOv5 model
-    Converts  the  input  image  to  a blob  suitable  for model input
-    Processes the model outputs to extract class IDs, confidences, and bounding box coordinates
-    Applies confidence and threshold filtering and performs non-maximum suppression to eliminate redundant detections
-    */
+    // credit for yolo inference accorded to https://github.com/ultralytics/ultralytics
     cv::Mat blob;
     auto input_image = formatToSquare(input);
 

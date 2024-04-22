@@ -10,7 +10,7 @@
 using namespace std::chrono_literals;
 
 CameraMockerNode::CameraMockerNode() :
-    Node("camera_mocker_publisher"), rng_(cv::theRNG())
+    Node("camera_mocker_publisher")
 {
     publisher_ = this->create_publisher<sensor_msgs::msg::Image>("image_provider", 10);
     timer_ = this->create_wall_timer(500ms, std::bind(&CameraMockerNode::timer_callback, this));

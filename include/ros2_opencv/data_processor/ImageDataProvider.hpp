@@ -19,7 +19,6 @@ private:
   rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr publisher_;
   int cols_{640}, rows_{480}; // image size
   int count_{0}; // number of published image
-  cv::RNG rng_{}; // random generator
   std::string video_path_{};
   cv::VideoCapture capture_{};
 };
